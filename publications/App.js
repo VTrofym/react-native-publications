@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,69 +9,109 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
+  Dimensions,
+  TouchableWithoutFeedback,
 } from "react-native";
+
+const initialState = {
+  login: "",
+  email: "",
+  password: "",
+};
 
 export default function App() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [state, setState] = useState(initialState);
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 20 * 2
+  );
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 20 * 2;
+      console.log("width", width);
+
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    // console.log("state", state);
-    // setState(initialState);
+    console.log("state", state);
+    setState(initialState);
   };
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require("./assets/images/PhotoBG.jpg")}
-        style={styles.imageBG}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "margin"}
+    <TouchableWithoutFeedback onPress={keyboardHide}>
+      <View style={styles.container}>
+        <ImageBackground
+          source={require("./assets/images/PhotoBG.jpg")}
+          style={styles.imageBG}
         >
-          <View
-            style={{
-              ...styles.form,
-              paddingBottom: isShowKeyboard ? 0 : 78,
-              // width: dimensions,
-            }}
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "margin"}
           >
-            <Text style={styles.title}>Реєстрація</Text>
-            <TextInput
-              style={styles.input}
-              textAlign={"center"}
-              onFocus={() => setIsShowKeyboard(true)}
-            />
-            <TextInput
-              style={styles.input}
-              textAlign={"center"}
-              onFocus={() => setIsShowKeyboard(true)}
-            />
-            <TextInput
-              style={styles.input}
-              textAlign={"center"}
-              secureTextEntry={true}
-              onFocus={() => setIsShowKeyboard(true)}
-            />
-            <TouchableOpacity
-              style={styles.btn}
-              activeOpacity={0.6}
-              onPress={keyboardHide}
+            <View
+              style={{
+                ...styles.form,
+                paddingBottom: isShowKeyboard ? 0 : 78,
+              }}
             >
-              <Text style={styles.btnTitle}>Зареєструватися</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.btnQuestion}
-              activeOpacity={0.6}
-              onPress={keyboardHide}
-            >
-              <Text style={styles.btnQuestionText}>Вже є акаунт? Увійти!</Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
-      </ImageBackground>
-    </View>
+              <Text style={styles.title}>Реєстрація</Text>
+              <TextInput
+                style={{ ...styles.input, width: dimensions }}
+                textAlign={"center"}
+                onFocus={() => setIsShowKeyboard(true)}
+                value={state.login}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, login: value }))
+                }
+              />
+              <TextInput
+                style={{ ...styles.input, width: dimensions }}
+                textAlign={"center"}
+                onFocus={() => setIsShowKeyboard(true)}
+                value={state.email}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, email: value }))
+                }
+              />
+              <TextInput
+                style={{ ...styles.input, width: dimensions }}
+                textAlign={"center"}
+                secureTextEntry={true}
+                onFocus={() => setIsShowKeyboard(true)}
+                value={state.password}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, password: value }))
+                }
+              />
+              <TouchableOpacity
+                style={{ ...styles.btn, width: dimensions }}
+                activeOpacity={0.6}
+                onPress={keyboardHide}
+              >
+                <Text style={styles.btnTitle}>Зареєструватися</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.btnQuestion}
+                activeOpacity={0.6}
+                onPress={keyboardHide}
+              >
+                <Text style={styles.btnQuestionText}>
+                  Вже є акаунт? Увійти!
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -87,10 +127,10 @@ const styles = StyleSheet.create({
   },
   form: {
     backgroundColor: "#FFFFFF",
-    // paddingBottom: 78,
     paddingTop: 92,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    alignItems: "center",
   },
   title: {
     textAlign: "center",
@@ -106,7 +146,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 50,
     marginBottom: 16,
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
   },
   btn: {
     alignItems: "center",
@@ -114,7 +154,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: Platform.OS === "ios" ? "#FF6C00" : "#FF6C00",
     borderRadius: 25,
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
     marginBottom: 16,
     marginTop: 27,
   },
