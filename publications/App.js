@@ -34,9 +34,9 @@ export default function App() {
       setDimensions(width);
     };
     Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
+    // return () => {
+    //   Dimensions.removeEventListener("change", onChange);
+    // };
   }, []);
 
   const keyboardHide = () => {
@@ -46,8 +46,13 @@ export default function App() {
     setState(initialState);
   };
 
+  const keyboardHideByKlick = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
+    <TouchableWithoutFeedback onPress={keyboardHideByKlick}>
       <View style={styles.container}>
         <ImageBackground
           source={require("./assets/images/PhotoBG.jpg")}
