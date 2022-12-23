@@ -14,12 +14,12 @@ import {
 } from "react-native";
 
 const initialState = {
-  login: "",
+  nickname: "",
   email: "",
   password: "",
 };
 
-export default function RegisterScreen() {
+export default function RegisterScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(
@@ -72,9 +72,9 @@ export default function RegisterScreen() {
                 style={{ ...styles.input, width: dimensions }}
                 textAlign={"center"}
                 onFocus={() => setIsShowKeyboard(true)}
-                value={state.login}
+                value={state.nickname}
                 onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, login: value }))
+                  setState((prevState) => ({ ...prevState, nickname: value }))
                 }
               />
               <TextInput
@@ -106,10 +106,10 @@ export default function RegisterScreen() {
               <TouchableOpacity
                 style={styles.btnQuestion}
                 activeOpacity={0.6}
-                onPress={keyboardHide}
+                onPress={() => navigation.navigate("Login")}
               >
                 <Text style={styles.btnQuestionText}>
-                  Вже є акаунт? Увійти!
+                  Вже є акаунт? <Text>Увійти!</Text>
                 </Text>
               </TouchableOpacity>
             </View>
