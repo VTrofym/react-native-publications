@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 export default function PostsScreen() {
   return (
     <View style={styles.container}>
-      <Text>ProfileScreen</Text>
+      <Text>PostsScreen</Text>
     </View>
   );
 }
