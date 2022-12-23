@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Entypo, AntDesign, Feather } from "@expo/vector-icons";
 
 const AuthStack = createNativeStackNavigator();
 const MainTab = createBottomTabNavigator();
@@ -29,32 +29,32 @@ export const useRoute = (isAuth) => {
     );
   }
   return (
-    <MainTab.Navigator>
+    <MainTab.Navigator tabBarOptions={{ showLabel: false }}>
       <MainTab.Screen
         name="Posts"
         component={PostsScreen}
         options={{
-          tabBarIcon: ({ focused, size, color }) => {
-            <MaterialIcons name="local-post-office" size={24} color="black" />;
-          },
+          tabBarIcon: ({ focused, size, color }) => (
+            <Entypo name="grid" size={24} color="black" />
+          ),
         }}
       />
       <MainTab.Screen
-        options={{
-          tabBarIcon: ({ focused, size, color }) => {
-            <MaterialIcons name="local-post-office" size={24} color="black" />;
-          },
-        }}
         name="Create"
         component={CreateScreen}
+        options={{
+          tabBarIcon: ({ focused, size, color }) => (
+            <AntDesign name="plus" size={24} color="black" />
+          ),
+        }}
       />
       <MainTab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({ focused, size, color }) => {
-            <MaterialIcons name="local-post-office" size={24} color="black" />;
-          },
+          tabBarIcon: ({ focused, size, color }) => (
+            <Feather name="user" size={24} color="black" />
+          ),
         }}
       />
     </MainTab.Navigator>
