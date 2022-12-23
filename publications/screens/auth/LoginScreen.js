@@ -19,7 +19,7 @@ const initialState = {
 };
 
 export default function LoginScreen({ navigation }) {
-  console.log("navigation", navigation);
+  // console.log("navigation", navigation);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(
@@ -29,7 +29,7 @@ export default function LoginScreen({ navigation }) {
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 20 * 2;
-      console.log("width", width);
+      // console.log("width", width);
 
       setDimensions(width);
     };

@@ -29,7 +29,7 @@ export default function RegisterScreen({ navigation }) {
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 20 * 2;
-      console.log("width", width);
+      // console.log("width", width);
 
       setDimensions(width);
     };
