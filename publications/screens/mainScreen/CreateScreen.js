@@ -30,7 +30,7 @@ export default function CreateScreen({ navigation }) {
           </View>
         )}
         <TouchableOpacity style={styles.snapContainer} onPress={takePhoto}>
-          <Text style={styles.snap}>SNA</Text>
+          <Text style={styles.snap}>SNAP</Text>
         </TouchableOpacity>
       </Camera>
       <View>
@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
     top: 50,
     left: 10,
     borderColor: "green",
-    borderWidth: 1,
+    borderWidth: 3,
     borderRadius: 10,
   },
   snapContainer: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#ff0000",
     borderRadius: 15,
     width: 70,
