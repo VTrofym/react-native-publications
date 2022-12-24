@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import { useState } from "react";
 
+import * as Location from "expo-location";
+
 export default function CreateScreen({ navigation }) {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
@@ -9,12 +11,26 @@ export default function CreateScreen({ navigation }) {
   const takePhoto = async () => {
     // console.log(camera.takePictureAsync());
     const photo = await camera.takePictureAsync();
+
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      // console.log("status", status);
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      // console.log("latitude", location.coords.latitude);
+      // console.log("longitude", location.coords.longitude);
+    })();
+
     // console.log("photo", photo.uri);
     setPhoto(photo.uri);
   };
 
   const sendPhoto = () => {
-    console.log("navigation", navigation);
+    // console.log("navigation", navigation);
     navigation.navigate("Posts", { photo });
   };
 
