@@ -12,6 +12,8 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authSignUpUser } from "../../redux/auth/authOperations";
 
 const initialState = {
   nickname: "",
@@ -26,6 +28,8 @@ export default function RegisterScreen({ navigation }) {
     Dimensions.get("window").width - 20 * 2
   );
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 20 * 2;
@@ -34,15 +38,17 @@ export default function RegisterScreen({ navigation }) {
       setDimensions(width);
     };
     Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
+    // return () => {
+    //   Dimensions.removeEventListener("change", onChange);
+    // };
   }, []);
 
-  const keyboardHide = () => {
+  const handleSubmit = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log("state", state);
+    // console.log("state", state);
+
+    dispatch(authSignUpUser(state));
     setState(initialState);
   };
 
@@ -99,7 +105,7 @@ export default function RegisterScreen({ navigation }) {
               <TouchableOpacity
                 style={{ ...styles.btn, width: dimensions }}
                 activeOpacity={0.6}
-                onPress={keyboardHide}
+                onPress={handleSubmit}
               >
                 <Text style={styles.btnTitle}>Зареєструватися</Text>
               </TouchableOpacity>

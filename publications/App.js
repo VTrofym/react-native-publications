@@ -5,7 +5,7 @@ import { useRoute } from "./router";
 import { store } from "./redux/store";
 
 export default function App() {
-  const routing = useRoute(true);
+  const routing = useRoute(false);
   return (
     <Provider store={store}>
       <NavigationContainer>{routing}</NavigationContainer>
