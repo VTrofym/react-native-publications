@@ -6,7 +6,7 @@ import db from "../../firebase/config";
 
 export const authSignUpUser =
   ({ nickname, email, password }) =>
-  async (dispatch, getSatte) => {
+  async (dispatch, setState) => {
     console.log("nickname, email, password", nickname, email, password);
     try {
       const user = await db
@@ -19,6 +19,27 @@ export const authSignUpUser =
     }
   };
 
-export const authSignInUser = () => async (dispatch, getState) => {};
+export const authSignInUser =
+  ({ email, password }) =>
+  async (dispatch, setState) => {
+    try {
+      const user = await db.auth().signInWithEmailAndPassword(email, password);
+      console.log("user", user);
+    } catch (error) {
+      console.log("error", error);
+      console.log("error.code", error.code);
+      console.log("error.message", error.message);
+    }
+  };
 
-export const authSignOutUser = () => async (dispatch, getState) => {};
+export const authSignOutUser = () => async (dispatch, setState) => {
+  try {
+    const user = await db
+      .auth()
+      .createUserWithEmailAndPassword(email, password);
+    console.log("user", user);
+  } catch (error) {
+    console.log("error", error);
+    console.log("error.message", error.message);
+  }
+};

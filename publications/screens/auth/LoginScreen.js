@@ -12,6 +12,9 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from "react-native";
+import { useDispatch } from "react-redux";
+
+import { authSignInUser } from "../../redux/auth/authOperations";
 
 const initialState = {
   email: "",
@@ -34,25 +37,28 @@ export default function LoginScreen({ navigation }) {
       setDimensions(width);
     };
     Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
+    // return () => {
+    //   Dimensions.removeEventListener("change", onChange);
+    // };
   }, []);
 
-  const keyboardHide = () => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log("state", state);
+    // console.log("state", state);
+    dispatch(authSignInUser(state));
     setState(initialState);
   };
 
-  const keyboardHideByKlick = () => {
+  const keyboardHideByTouch = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
   };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHideByKlick}>
+    <TouchableWithoutFeedback onPress={keyboardHideByTouch}>
       <View style={styles.container}>
         <ImageBackground
           source={require("../../assets/images/PhotoBG.jpg")}
@@ -90,7 +96,7 @@ export default function LoginScreen({ navigation }) {
               <TouchableOpacity
                 style={{ ...styles.btn, width: dimensions }}
                 activeOpacity={0.6}
-                onPress={keyboardHide}
+                onPress={handleSubmit}
               >
                 <Text style={styles.btnTitle}>Увійти</Text>
               </TouchableOpacity>

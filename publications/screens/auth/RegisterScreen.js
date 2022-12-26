@@ -52,13 +52,13 @@ export default function RegisterScreen({ navigation }) {
     setState(initialState);
   };
 
-  const keyboardHideByKlick = () => {
+  const keyboardHideByTouch = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
   };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHideByKlick}>
+    <TouchableWithoutFeedback onPress={keyboardHideByTouch}>
       <View style={styles.container}>
         <ImageBackground
           source={require("../../assets/images/PhotoBG.jpg")}
