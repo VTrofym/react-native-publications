@@ -15,7 +15,7 @@ import db from "../../firebase/config";
 
 export default function CreateScreen({ navigation }) {
   const [camera, setCamera] = useState(null);
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
   const [comment, setComment] = useState("");
   const [location, setLocation] = useState(null);
 
@@ -33,19 +33,19 @@ export default function CreateScreen({ navigation }) {
   }, []);
 
   const takePhoto = async () => {
-    console.log("comment", comment);
-    console.log("location", location);
+    // console.log("comment", comment);
+    // console.log("location", location);
     // console.log(camera.takePictureAsync());
     const { uri } = await camera.takePictureAsync();
 
-    console.log("photo", uri);
+    // console.log("photo", uri);
     setPhoto(uri);
   };
 
   const sendPhoto = () => {
     uploadPostToServer();
     // console.log("navigation", navigation);
-    navigation.navigate("DefaultScreen", { photo });
+    navigation.navigate("DefaultScreen");
   };
 
   const uploadPostToServer = async () => {
