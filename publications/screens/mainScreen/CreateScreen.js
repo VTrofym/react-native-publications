@@ -1,37 +1,76 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { Camera, CameraType } from "expo-camera";
-import { useState } from "react";
-
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from "react-native";
+import { Camera } from "expo-camera";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import * as Location from "expo-location";
+
+import db from "../../firebase/config";
 
 export default function CreateScreen({ navigation }) {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
+  const [comment, setComment] = useState("");
+  const [location, setLocation] = useState(null);
 
-  const takePhoto = async () => {
-    // console.log(camera.takePictureAsync());
-    const photo = await camera.takePictureAsync();
+  const { userId, nickname } = useSelector((state) => state.auth);
 
+  useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      // console.log("status", status);
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
+        console.log("Permission to access location was denied");
       }
-
-      let location = await Location.getCurrentPositionAsync({});
-      // console.log("latitude", location.coords.latitude);
-      // console.log("longitude", location.coords.longitude);
+      let locationRes = await Location.getCurrentPositionAsync({});
+      setLocation(locationRes);
     })();
+  }, []);
 
-    // console.log("photo", photo.uri);
-    setPhoto(photo.uri);
+  const takePhoto = async () => {
+    console.log("comment", comment);
+    console.log("location", location);
+    // console.log(camera.takePictureAsync());
+    const { uri } = await camera.takePictureAsync();
+
+    console.log("photo", uri);
+    setPhoto(uri);
   };
 
   const sendPhoto = () => {
+    uploadPostToServer();
     // console.log("navigation", navigation);
     navigation.navigate("DefaultScreen", { photo });
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    const createPost = await db
+      .firestore()
+      .collection("posts")
+      .add({ photo, comment, location: location.coords, userId, nickname });
+  };
+
+  // запись фото в storage на firebase
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const uniquePostId = Date.now().toString();
+    await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+
+    // достал ссылку на фото
+    const processedPhoto = await db
+      .storage()
+      .ref("postImage")
+      .child(uniquePostId)
+      .getDownloadURL();
+
+    return processedPhoto;
   };
 
   return (
@@ -50,6 +89,9 @@ export default function CreateScreen({ navigation }) {
         </TouchableOpacity>
       </Camera>
       <View>
+        <View style={styles.inputContainer}>
+          <TextInput style={styles.input} onChangeText={setComment} />
+        </View>
         <TouchableOpacity onPress={sendPhoto} style={styles.sendBtn}>
           <Text style={styles.sendTitle}>Відправити</Text>
         </TouchableOpacity>
@@ -90,6 +132,14 @@ const styles = StyleSheet.create({
   },
   snap: {
     color: "#fff",
+  },
+  inputContainer: {
+    marginHorizontal: 10,
+    backgroundColor: "#e0ffff",
+  },
+  input: {
+    marginHorizontal: 10,
+    height: 50,
   },
   sendBtn: {
     borderWidth: 1,

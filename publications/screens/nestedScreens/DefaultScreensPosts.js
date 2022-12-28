@@ -22,7 +22,7 @@ export default function DefaultScreensPosts({ route, navigation }) {
           <View style={{ marginTop: 10 }}>
             <Image
               source={{ uri: item.photo }}
-              style={{ width: 100, height: 100 }}
+              style={{ width: 200, height: 200 }}
             />
           </View>
         )}
