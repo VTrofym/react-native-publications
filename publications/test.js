@@ -3,7 +3,7 @@ export const testOne = () => {
 };
 
 export const testTwo = () => {
-  console.log("second second");
+  console.log("second");
 };
 
 export const testThree = () => {
