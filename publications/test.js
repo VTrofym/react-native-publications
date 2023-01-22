@@ -1,5 +1,5 @@
 export const testOne = () => {
-  console.log("first");
+  console.log("test first");
 };
 
 export const testTwo = () => {
