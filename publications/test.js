@@ -7,5 +7,5 @@ export const testTwo = () => {
 };
 
 export const testThree = () => {
-  console.log("second");
+  console.log("test third");
 };
