@@ -9,3 +9,7 @@ export const testTwo = () => {
 export const testThree = () => {
   console.log("test third");
 };
+
+export const testFour = () => {
+  console.log("test fourth");
+};
